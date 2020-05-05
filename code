@@ -1,0 +1,1074 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <iomanip>
+#include <ctime>
+
+using namespace std;
+
+//GLOBAL VARIABLES
+string rss = "Weapon: Rusty Sword";
+int gold = 0;
+int hpn = 5;
+int spn = 5;
+int run = 0;
+
+//YOU GOT VECTORED
+vector <string> backpack;
+vector <string>::const_iterator iter;
+
+//FUNCTIONS
+void p1shoppyboi();
+void p1shopmain();
+void p2shopmain();
+void p2shoppyboi();
+//CLASSES
+
+class player1
+{
+	//STARTS WITH MORE HEALTH
+public:
+	int position = 1;
+	int attack = 10;
+	int goldstart = 0;
+	int health = 100;
+};
+
+class player2
+{
+	//STARTS WITH MORE ATTACK
+public:
+	int position = 5;
+	int attack = 15;
+	int goldstart = 0;
+	int health = 75;
+};
+
+class enemytype1
+{
+public:
+	int attack = 10;
+	int health = 50;
+};
+
+class enemytype2
+{
+public:
+	int attack = 15;
+	int health = 75;
+};
+
+class enemytype3
+{
+public:
+	int attack = 15;
+	int health = 300;
+};
+
+class enemytype4
+{
+public:
+	int attack = 12.5;
+	int health = 80;
+};
+
+class enemytype5
+{
+public:
+	int attack = 7.5;
+	int health = 60;
+};
+
+int main()
+{
+	//BOOL
+	bool dungeon1 = false;
+	bool dungeon2 = false;
+	bool dungeon3 = false;
+	bool dungeon4 = false;
+	bool dungeon5 = false;
+	bool tutorial = false;
+	bool shop = false;
+
+	//INT
+	int holdscreen = 1;
+	int sw = 1;
+	int health = 0;
+	int attack = 0;
+	int enemyattack = 0;
+	int enemyhealth = 0;
+	int enemynumber = 0;
+	int fight = 0;
+	int lobby = 0;
+	int hpn = 5; //HEALTHPOTIONNUMBER
+	int spn = 5; //STRENGHTPOTIONNUMBER
+
+	//STRING
+	string choice;
+	string hps = "Item: Healthpotion\n";
+	string sps = "Item: Strengthpotion\n";
+
+	//CALLS
+	player1 player1;
+	player2 player2;
+	enemytype1 enemytype1;
+	enemytype2 enemytype2;
+	enemytype3 enemytype3;
+	enemytype4 enemytype4;
+	enemytype5 enemytype5;
+
+	//YOU HAVE BEEN VECTORED
+	backpack.push_back(hps);
+	backpack.push_back(sps);
+	backpack.push_back(rss);
+
+	//RANDOM NUMBER GENERATOR
+	srand(time(NULL));
+
+	//PLAYER REFERENCES
+	int& position1 = player1.position;
+	int& position2 = player2.position;
+	int& p1attack = player1.attack;
+	int& p2attack = player2.attack;
+	int& p1health = player1.health;
+	int& p2health = player2.health;
+	int& p1gold = player1.goldstart;
+	int& p2gold = player2.goldstart;
+	int p3health = 0;
+	int p3attack = 0;
+
+	//ENEMY REFERENCES
+	int& e1attack = enemytype1.attack;
+	int& e2attack = enemytype2.attack;
+	int& e3attack = enemytype3.attack;
+	int& e4attack = enemytype4.attack;
+	int& e5attack = enemytype5.attack;
+	int& e1health = enemytype1.health;
+	int& e2health = enemytype2.health;
+	int& e3health = enemytype3.health;
+	int& e4health = enemytype4.health;
+	int& e5health = enemytype5.health;
+
+	//DUNGEON SYSTEM
+	do
+	{
+		switch (sw)
+		{
+		case 1:
+			cout << "Tutorial.\n";
+			do
+			{
+				cout << "Type attack to attack.\n";
+				cin >> choice;
+				if (choice == "attack")
+				{
+					cout << "Good.\n";
+				}
+				else
+				{
+					break;
+				}
+				cout << "Type run to exit to the lobby.\n";
+				cin >> choice;
+				if (choice == "run")
+				{
+					cout << "Good.\n";
+				}
+				else
+				{
+					break;
+				}
+				cout << "Type item to use an item.\n";
+				cin >> choice;
+				if (choice == "item")
+				{
+					cout << "Good.\n";
+				}
+				else
+				{
+					break;
+				}
+				if (enemynumber <= 0 && p2health > 0)
+				{
+					sw = 6;
+				}
+			} while (sw == 1);
+
+			break;
+			//DUNGEON 1 GOBLIN LEVEL
+		case 2:
+			do
+			{
+				cout << "You are in the first dungeon.\n";
+				enemynumber = rand() % 4 + 1;
+				cout << "There are " << enemynumber << " enemies\n";
+				do
+				{
+
+					do
+					{
+						cin >> choice;
+						//ATTACK PART
+						if (choice == "attack" || choice == "Attack")
+						{
+							e1health = e1health - p1attack;
+							p1health = p1health - e1attack;
+							cout << "You attacked the enemy for " << p1attack << " damage, the enemy has " << e1health << " health left.\n";
+							cout << "The enemy attacked you for " << e1attack << " damage, you now have " << p1health << " health left.\n";
+							//REDUCE ENEMY COUNT PART
+							if (e1health <= 0 && enemynumber > 0)
+							{
+								enemynumber = enemynumber - 1;
+								e1health = 50;
+								cout << "You defeated the enemy, here comes another!\n";
+							}
+							//SWITCH ENEMY DIES
+							if (e1health <= 0 && enemynumber <= 0)
+							{
+								sw = 9;
+							}
+						}
+						//USE ITEMS FUNCTION
+						else if (choice == "item" || choice == "Item")
+						{
+							cout << "Type sp to use a strengthpotion.\nType hp to use a healthpotion.\nType list to see a list of your items.\n";
+							cin >> choice;
+							//USE STRENGTHPOTION
+							if (choice == "sp" || choice == "Sp" || choice == "SP" || choice == "sP" && spn > 0)
+							{
+								spn = spn - 1;
+								p1attack = p1attack + 1;
+								cout << "\nYour damage output was increased by 1.\n";
+							}
+							//USE HEALTHPOTION
+							else if (choice == "hp" || choice == "Hp" || choice == "HP" || choice == "hP" && hpn > 0)
+							{
+								hpn = hpn - 1;
+								p1health = p1health + 10;
+								cout << "\nYour health was increased by 10.\n";
+							}
+							//GET LIST
+							else if (choice == "List" || choice == "list")
+							{
+								for (int i = 0; i < backpack.size(); i++)
+									cout << backpack.at(i) << ' ';
+							}
+						}
+						//RUN PART
+						else if (choice == "run" || choice == "Run")
+						{
+							cout << "\nYou ran.\n\n";
+							run = 1;
+						}
+					} while (enemynumber > 0 && p2health > 0 && run == 0);
+					//SECONDARY RUN PART
+					if (run == 1)
+					{
+						run = 0;
+						sw = 9;
+						break;
+					}
+					//BLACKOUT PART
+					if (p1health <= 0)
+					{
+						cout << "\nYou blacked out after taking a lot of damage from the enemy.\n";
+						sw = 9;
+						break;
+					}
+					//WIN GO TO LOBBY SECTION
+					else if (enemynumber <= 0 && p1health > 0)
+					{
+						cout << "The enemies are dead.\n";
+						cout << "Transporting to the lobby.\n";
+						sw = 9;
+						break;
+					}
+				} while (enemynumber > 0 && health > 0 && sw == 2);
+				if (enemynumber > 0 && health > 0 && p1health >= 0)
+				{
+					sw = 3;
+				}
+			} while (sw == 2);
+			break;
+			//DUNGEON 2 HYDRA LEVEL
+		case 3:
+			do
+			{
+				cout << "You are in the second dungeon.\n";
+				enemynumber = rand() % 3 + 1;
+				cout << "There are " << enemynumber << " enemies\n";
+					do
+					{
+						cin >> choice;
+						if (choice == "attack" || choice == "Attack")
+						{
+								e2health = e2health - p1attack;
+							p1health = p1health - e1attack;
+							cout << "You attacked the enemy for " << p1attack << " damage, the enemy has " << e2health << " health left.\n";
+							cout << "The enemy attacked you for " << e2attack << " damage, you now have " << p1health << " health left.\n";
+							if (e2health <= 0 && enemynumber > 0)
+							{
+								enemynumber = enemynumber - 1;
+								e2health = 75;
+								cout << "You defeated the enemy, here comes another!\n";
+							}
+							if (e2health <= 0 && enemynumber <= 0)
+							{
+								sw = 9;
+								break;
+							}
+						}
+						else if (choice == "item" || choice == "Item")
+						{
+							cout << "Type sp to use a strengthpotion.\nType hp to use a healthpotion.\nType list to see a list of your items.\n";
+							cin >> choice;
+							if (choice == "sp" || choice == "Sp" || choice == "SP" || choice == "sP" && spn > 0)
+							{
+								spn = spn - 1;
+								p1attack = p1attack + 1;
+								cout << "\nYour damage output was increased by 1.\n";
+							}
+							else if (choice == "hp" || choice == "Hp" || choice == "HP" || choice == "hP" && hpn > 0)
+							{
+								hpn = hpn - 1;
+								p1health = p1health + 10;
+								cout << "\nYour health was increased by 10.\n";
+							}
+							else if (choice == "List" || choice == "list")
+							{
+								for (int i = 0; i < backpack.size(); i++)
+									cout << backpack.at(i) << ' ';
+							}
+							else if (choice == "run" || choice == "Run")
+							{
+								cout << "\nYou ran.\n\n";
+								run = 1;
+							}
+						}
+					} while (enemynumber > 0 && p2health > 0 && run == 0);
+					if (p1health <= 0)
+					{
+						cout << "\nYou blacked out after taking a lot of damage from the enemy.\n";
+						sw = 9;
+						break;
+					}
+					if (run == 1)
+					{
+						run = 0;
+						sw = 9;
+						break;
+					}
+			} while (sw == 3);
+			break;
+			//DUNGEON 3 BOSS LEVEL, DRACULA
+		case 4:
+			p3health = p1health + p2health;
+			p3attack = p1attack + p2attack;
+			cout << "You are in dungeon three.\n";
+			do
+			{
+				enemynumber = 1;
+				cout << "There is " << enemynumber << " enemies\n";
+
+				do
+				{
+					cin >> choice;
+					if (choice == "attack" || choice == "Attack")
+					{
+						e3health = e3health - p3attack;
+						p3health = p3health - e3attack;
+						cout << "You attacked the enemy for " << p3attack << " damage, the enemy has " << e3health << " health left.\n";
+						cout << "The enemy attacked you for " << e3attack << " damage, you now have " << p3health << " health left.\n";
+						if (e3health <= 0 && enemynumber <= 0)
+						{
+							sw = 9;
+							break;
+						}
+					}
+					else if (choice == "item" || choice == "Item")
+					{
+						cout << "Type sp to use a strengthpotion.\nType hp to use a healthpotion.\nType list to see a list of your items.\n";
+						cin >> choice;
+						if (choice == "sp" || choice == "Sp" || choice == "SP" || choice == "sP" && spn > 0)
+						{
+							spn = spn - 1;
+							p1attack = p1attack + 1;
+							cout << "\nYour damage output was increased by 1.\n";
+						}
+						else if (choice == "hp" || choice == "Hp" || choice == "HP" || choice == "hP" && hpn > 0)
+						{
+							hpn = hpn - 1;
+							p1health = p1health + 10;
+							cout << "\nYour health was increased by 10.\n";
+						}
+						else if (choice == "List" || choice == "list")
+						{
+							for (int i = 0; i < backpack.size(); i++)
+								cout << backpack.at(i) << ' ';
+						}
+					}
+				} while (enemynumber > 0 && p3health > 0);
+				if (p3health <= 0)
+				{
+					cout << "\nYou blacked out after taking a lot of damage from the enemy.\n";
+					sw = 9;
+					break;
+				}
+				else if (choice == "run" || choice == "Run")
+				{
+					cout << "\nYou ran.\n\n";
+					run = 1;
+				}
+			} while (enemynumber > 0 && p3health > 0 && run == 0);
+			if (run == 1)
+			{
+				run = 0;
+				sw = 9;
+				break;
+			}
+			break;
+			//DUNGEON 4 BASILISK LEVEL
+		case 5:
+			do
+			{
+				cout << "You are in dungeon four.\n";
+				enemynumber = rand() % 3 + 1;
+				cout << "There are " << enemynumber << " enemies\n";
+				do
+				{
+					cin >> choice;
+					if (choice == "attack" || choice == "Attack")
+					{
+						e4health = e4health - p2attack;
+						p2health = p2health - e4attack;
+						cout << "You attacked the enemy for " << p2attack << " damage, the enemy has " << e4health << " health left.\n";
+						cout << "The enemy attacked you for " << e4attack << " damage, you now have " << p2health << " health left.\n";
+						if (e4health <= 0 && enemynumber > 0)
+						{
+							enemynumber = enemynumber - 1;
+							e4health = 80;
+							cout << "You defeated the enemy, here comes another!\n";
+						}
+						if (e4health <= 0 && enemynumber <= 0)
+						{
+							sw = 9;
+						}
+					}
+					else if (choice == "item" || choice == "Item")
+					{
+						cout << "Type sp to use a strengthpotion.\nType hp to use a healthpotion.\nType list to see a list of your items.\n";
+						cin >> choice;
+						if (choice == "sp" || choice == "Sp" || choice == "SP" || choice == "sP" && spn > 0)
+						{
+							spn = spn - 1;
+							p2attack = p2attack + 1;
+							cout << "\nYour damage output was increased by 1.\n";
+						}
+						else if (choice == "hp" || choice == "Hp" || choice == "HP" || choice == "hP" && hpn > 0)
+						{
+							hpn = hpn - 1;
+							p2health = p2health + 10;
+							cout << "\nYour health was increased by 10.\n";
+						}
+						else if (choice == "List" || choice == "list")
+						{
+							for (int i = 0; i < backpack.size(); i++)
+								cout << backpack.at(i) << ' ';
+						}
+					}
+				} while (enemynumber > 0 && p2health > 0);
+				if (p2health <= 0)
+				{
+					cout << "\nYou blacked out after taking a lot of damage from the enemy.\n";
+					sw = 9;
+					break;
+				}
+				else if (choice == "run" || choice == "Run")
+				{
+					cout << "\nYou ran.\n\n";
+					run = 1;
+				}
+			} while (enemynumber > 0 && p2health > 0 && run == 0);
+			if (run == 1)
+			{
+				run = 0;
+				sw = 9;
+				break;
+			}
+			break;
+			//DUNGEON 5 OGRE LEVEL
+		case 6:
+			do
+			{
+				cout << "You are in dungeon five.";
+				enemynumber = rand() % 3 + 1;
+				cout << "There are " << enemynumber << " enemies\n";
+				do
+				{
+
+					do
+					{
+						cin >> choice;
+						if (choice == "attack" || choice == "Attack")
+						{
+							e5health = e5health - p2attack;
+							p2health = p2health - e5attack;
+							cout << "You attacked the enemy for " << p2attack << " damage, the enemy has " << e5health << " health left.\n";
+							cout << "The enemy attacked you for " << e5attack << " damage, you now have " << p2health << " health left.\n";
+							if (e5health <= 0 && enemynumber > 0)
+							{
+								enemynumber = enemynumber - 1;
+								e5health = 60;
+								cout << "You defeated the enemy, here comes another!\n";
+							}
+							if (e5health <= 0 && enemynumber <= 0)
+							{
+								sw = 9;
+							}
+						}
+						else if (choice == "item" || choice == "Item")
+						{
+							cout << "Type sp to use a strengthpotion.\nType hp to use a healthpotion.\nType list to see a list of your items.\n";
+							cin >> choice;
+							if (choice == "sp" || choice == "Sp" || choice == "SP" || choice == "sP" && spn > 0)
+							{
+								spn = spn - 1;
+								p2attack = p2attack + 1;
+								cout << "\nYour damage output was increased by 1.\n";
+							}
+							else if (choice == "hp" || choice == "Hp" || choice == "HP" || choice == "hP" && hpn > 0)
+							{
+								hpn = hpn - 1;
+								p2health = p2health + 10;
+								cout << "\nYour health was increased by 10.\n";
+							}
+							else if (choice == "List" || choice == "list")
+							{
+								for (int i = 0; i < backpack.size(); i++)
+									cout << backpack.at(i) << ' ';
+							}
+						}
+						else if (choice == "run" || choice == "Run")
+						{
+							cout << "\nYou ran.\n\n";
+							run = 1;
+						}
+					} while (enemynumber > 0 && p2health > 0 && run == 0);
+					if (run == 1)
+					{
+						run = 0;
+						sw = 9;
+						break;
+					}
+					if (p2health <= 0)
+					{
+						cout << "\nYou blacked out after taking a lot of damage from the enemy.\n";
+						sw = 9;
+						break;
+					}
+					do
+					{
+						sw = 9;
+						break;
+					} while (enemynumber <= 0 && p2health > 0);
+				} while (enemynumber > 0 && p2health > 0);
+				if (enemynumber <= 0 && p2health > 0)
+				{
+					sw = 5;
+				}
+			} while (sw == 6);
+			break;
+		case 7:
+			cout << "DEADCASE: TOO HARD TO FIX AT THIS POINT. IF YOU COME ACROSS THIS MESSAGE FOR ANY REASON, IT IS TOO LATE. RESTART THE GAME.";
+			break;
+		case 8:
+			//WIN CASE
+			do
+			{
+				cout << "YOU WIN\n";
+				holdscreen = 0;
+				break;
+				return 0;
+			} while (sw == 8);
+			break;
+		case 9:
+			//THE LOBBY FUNCTION HERE
+			cout << "You're in the lobby, the shop and the portal are located here.\nType shop to be transported to the shop.\nType 1 to go to Dungeon 1.\nType 2 to go to Dungeon 2.\nType 3 to go to Dungeon 3\nType 4 to go to Dungeon 4\nType 5 to go to Dungeon 5.\n\nYour health has been restored.\n";
+			p1health = 90; //RESTORES MOST OF P1HEALTH
+			p2health = 70; //RESTORES MOST OF P2HEALTH
+			run = 0; //ALLOWS YOU TO RETURN TO MAIN FUNCTION WHEN YOU RETURN TO DUNGEONS
+			do
+			{
+				//PORTAL
+				cin >> choice;
+				if (choice == "1")
+				{
+					cout << "Transporting to first dungeon.\n";
+					sw = 2;
+				}
+				else if (choice == "2")
+				{
+					cout << "Transporting to second dungeon.\n";
+					sw = 3;
+				}
+				else if (choice == "3")
+				{
+					cout << "Transporting to third dungeon.\n";
+					sw = 4;
+				}
+				else if (choice == "4")
+				{
+					cout << "Transporting to fourth dungeon.\n";
+					sw = 5;
+				}
+				else if (choice == "5")
+				{
+					cout << "Transporting to fifth dungeon.\n";
+					sw = 6;
+				}
+				else if (choice == "shop" && p1health == 90)
+				{
+					p1shoppyboi();
+				}
+				else if (choice == "shop" && p2health == 70)
+				{
+					p2shoppyboi();
+				}
+			} while (sw == 9);
+			break;
+		}
+	} while (holdscreen == 1);
+	return 0;
+}
+//PLAYER1 SHOP FUNCTION
+void p1shoppyboi()
+{
+	cout << "\nWelcome to the shop, would you like to purchase anything?\n";
+	p1shopmain();
+}
+//PLAYER2 SHOP FUNCTION
+void p2shoppyboi()
+{
+	cout << "\nWelcome to the shop, would you like to purchase anything?\n";
+	p2shopmain();
+}
+//PLAYER 1 SHOP LIST + BUY FUNCTION
+void p1shopmain()
+{
+	int hpsn = 10; int spsn = 10; int sssn = 1; int lssn = 1; int flsn = 1; int mwsn = 1; int hgsn = 1;
+	int ssn = 0; int lsn = 0; int fln = 0; int mwn = 0; int hgn = 0;
+	string choice; string sss = "Weapon : Shortsword"; string lss = "Weapon : Longsword"; string fls = "Weapon : Flintlock";
+	string mws = "Weapon : Magic Wand"; string hgs = "Weapon : Holy Hand Grenade";
+	cout << "\nAwesome, here's a list of the items we have for purchase.\n";
+	player1 player1;
+	//LIST FUNCTIONS BELOW
+
+
+	//HEALTHPOTION
+	if (hpsn > 0)
+	{
+		cout << "\nWe have " << hpsn << " healthpotion. - healthpotion";
+	}
+	//STRENGTHPOTION
+	else if (spsn > 0)
+	{
+		cout << "\nWe have " << spsn << " strengthpotion. - strengthpotion";
+	}
+	//SHORTSWORD
+	else if (sssn > 0)
+	{
+		cout << "We have " << sssn << " shortsword. - shortsword\n";
+	}
+	//LONGSWORD
+	else if (lssn > 0)
+	{
+		cout << "We have " << lssn << " longsword. - longsword\n";
+	}
+	//FLINTLOCK PISTOL
+	else if (flsn > 0)
+	{
+		cout << "We have " << flsn << " flintlock pistol. - pistol\n";
+	}
+	//MAGIC WAND
+	else if (mwsn > 0)
+	{
+		cout << "We have " << mwsn << " magic wand. - wand\n";
+	}
+	//HOLY HAND GRENADE
+	else if (hgsn > 0)
+	{
+		cout << "We have " << hgsn << " holy hand grenade. - python\n";
+	}
+	cout << "\n\nIf you would like to purchase any of these, type y. If you would like to leave, type n.\n";
+	cin >> choice;
+	
+	//ASKS IF YOU WANT TO STAY AND BUY SOMETHING
+
+
+	if (choice == "y" || choice == "Y")
+	{
+		cout << "\nIf you want to buy any of these items, type their names, and if you have enough gold, you'll be able to purchase them.\nNames are listed after the - on the list.\n\n";
+		cin >> choice;
+		if (choice == "healthpotion" && gold >= 10 && hpsn > 0)
+		{
+			cout << "This will cost 10 gold to purchase, are you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 10;
+				hpn = hpn + 1;
+				hpsn = hpsn - 1;
+				cout << "\nYou now have " << hpn << " healthpotions.\n";
+				//Brings you back to main shop function
+				p1shoppyboi();
+
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p1shoppyboi();
+			}
+		}
+		if (choice == "strengthpotion" && gold >= 10 && spsn > 0)
+		{
+			cout << "This will cost 10 gold to purchase, are you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 10;
+				spn = spn + 1;
+				spsn = spsn - 1;
+				cout << "\nYou now have " << spn << " strengthpotions.\n";
+				p1shoppyboi();
+
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p1shoppyboi();
+			}
+		}
+		if (choice == "shortsword" && gold >= 200 && sssn > 0)
+		{
+			cout << "\nThe shortsword is clearly a good weapon, the hilt is gilded, and the blade appears to be made of silver.\n" << "This will cost 50 gold to purchase, and you'll need to trade the merchant your rusty sword.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 200;
+				//ITERATOR TO REPLACE OLD WEAPON WITH NEW WEAPON AND INCREASE PLAYER ATTACK
+				iter = find(backpack.begin(), backpack.end(), rss);
+				if (iter != backpack.end())
+				{
+					*iter == sss;
+				}
+				backpack.push_back(sss);
+				cout << "Shortsword has been added to your inventory.";
+				sssn = sssn - 1;
+				player1.attack = player1.attack + 5;
+				p1shoppyboi();
+
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p1shoppyboi();
+			}
+		}
+		if (choice == "longsword" && gold >= 300 && lssn > 0)
+		{
+			cout << "\nThe longsword looks like the shortsword. But longer.\n" << "This will cost 300 gold to purchase, and you'll need to trade the merchant your shortsword.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 300;
+				iter = find(backpack.begin(), backpack.end(), sss);
+				if (iter != backpack.end())
+				{
+					*iter == lss;
+				}
+				backpack.push_back(lss);
+				cout << "Longsword has been added to your inventory.";
+				lssn = lssn - 1;
+				player1.attack = player1.attack + 5;
+				p1shoppyboi();
+
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p1shoppyboi();
+			}
+		}
+		if (choice == "pistol" && gold >= 500 && flsn > 0 && lsn == 1)
+		{
+			cout << "\nThe blunderbuss is the weapon of choice for pirates. It looks like a pistol that someone attached a trumpet to.\nThis causes it to function somewhat similarly to a shotgun.\n" << "This will cost 500 gold to purchase, and you'll need to trade the merchant your longsword.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 500;
+				iter = find(backpack.begin(), backpack.end(), lss);
+				if (iter != backpack.end())
+				{
+					*iter == fls;
+				}
+				backpack.push_back(fls);
+				cout << "Flintlock Pistol has been added to your inventory.";
+				flsn = flsn - 1;
+				player1.attack = player1.attack + 5;
+				p1shoppyboi();
+
+			}
+			if (choice == "wand" && gold >= 500 && flsn > 0 && lsn == 1)
+			{
+				cout << "\nThe blunderbuss is the weapon of choice for pirates. It looks like a pistol that someone attached a trumpet to.\nThis causes it to function somewhat similarly to a shotgun.\n" << "This will cost 500 gold to purchase, and you'll need to trade the merchant your flintlock pistol.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+				cin >> choice;
+				if (choice == "y")
+				{
+					gold = gold - 500;
+					iter = find(backpack.begin(), backpack.end(), fls);
+					if (iter != backpack.end())
+					{
+						*iter == mws;
+					}
+					backpack.push_back(mws);
+					cout << "Magic Wand has been added to your inventory.";
+					flsn = flsn - 1;
+					player1.attack = player1.attack + 5;
+					p1shoppyboi();
+
+				}
+			}
+			if (choice == "python" && gold >= 500 && flsn > 0 && lsn == 1)
+			{
+				cout << "\nThe holy hand grenade is the weapon of choice for kings and knights.\nEven though it's best used to exterminate demon bunnies, it'll work against any foe.\nThis causes it to function somewhat similarly to a shotgun.\n" << "This will cost 500 gold to purchase, and you'll need to trade the merchant your wand.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+				cin >> choice;
+				if (choice == "y")
+				{
+					gold = gold - 500;
+					iter = find(backpack.begin(), backpack.end(), mws);
+					if (iter != backpack.end())
+					{
+						*iter == hgs;
+					}
+					backpack.push_back(hgs);
+					cout << "Holy Hand Grenade has been added to your inventory.";
+					hgsn = hgsn - 1;
+					player1.attack = player1.attack + 20;
+					p1shoppyboi();
+
+				}
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p1shoppyboi();
+			}
+		}
+	}
+}
+void p2shopmain()
+{
+	int hpsn = 10; int spsn = 10; int sssn = 1; int lssn = 1; int flsn = 1; int mwsn = 1; int hgsn = 1;
+	int ssn = 0; int lsn = 0; int fln = 0; int mwn = 0; int hgn = 0;
+	string choice; string sss = "Weapon : Shortsword"; string lss = "Weapon : Longsword"; string fls = "Weapon : Flintlock";
+	string mws = "Weapon : Magic Wand"; string hgs = "Weapon : Holy Hand Grenade";
+	cout << "\nAwesome, here's a list of the items we have for purchase.\n";
+	player2 player2;
+	//HEALTHPOTION
+	if (hpsn > 0)
+	{
+		cout << "\nWe have " << hpsn << " healthpotion. - healthpotion";
+	}
+	//STRENGTHPOTION
+	else if (spsn > 0)
+	{
+		cout << "\nWe have " << spsn << " strengthpotion. - strengthpotion";
+	}
+	//SHORTSWORD
+	else if (sssn > 0)
+	{
+		cout << "We have " << sssn << " shortsword. - shortsword\n";
+	}
+	//LONGSWORD
+	else if (lssn > 0)
+	{
+		cout << "We have " << lssn << " longsword. - longsword\n";
+	}
+	//FLINTLOCK PISTOL
+	else if (flsn > 0)
+	{
+		cout << "We have " << flsn << " flintlock pistol. - pistol\n";
+	}
+	//MAGIC WAND
+	else if (mwsn > 0)
+	{
+		cout << "We have " << mwsn << " magic wand. - wand\n";
+	}
+	//HOLY HAND GRENADE
+	else if (hgsn > 0)
+	{
+		cout << "We have " << hgsn << " holy hand grenade. - python\n";
+	}
+	cout << "\n\nIf you would like to purchase any of these, type y. If you would like to leave, type n.\n";
+	cin >> choice;
+	//IF CHOICE IS YES
+	if (choice == "y" || choice == "Y")
+	{
+		cout << "\nIf you want to buy any of these items, type their names, and if you have enough gold, you'll be able to purchase them.\nNames are listed after the - on the list.\n\n";
+		cin >> choice;
+		if (choice == "healthpotion" && gold >= 10 && hpsn > 0)
+		{
+			cout << "This will cost 10 gold to purchase, are you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 10;
+				hpn = hpn + 1;
+				hpsn = hpsn - 1;
+				cout << "\nYou now have " << hpn << " healthpotions.\n";
+				p2shoppyboi();
+
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p2shoppyboi();
+			}
+		}
+		if (choice == "strengthpotion" && gold >= 10 && spsn > 0)
+		{
+			cout << "This will cost 10 gold to purchase, are you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 10;
+				spn = spn + 1;
+				spsn = spsn - 1;
+				cout << "\nYou now have " << spn << " strengthpotions.\n";
+				p2shoppyboi();
+
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p2shoppyboi();
+			}
+		}
+		if (choice == "shortsword" && gold >= 50 && sssn > 0)
+		{
+			cout << "\nThe shortsword is clearly a good weapon, the hilt is gilded, and the blade appears to be made of silver.\n" << "This will cost 50 gold to purchase, and you'll need to trade the merchant your rusty sword.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 200;
+				iter = find(backpack.begin(), backpack.end(), rss);
+				if (iter != backpack.end())
+				{
+					*iter == sss;
+				}
+				backpack.push_back(sss);
+				cout << "Shortsword has been added to your inventory.";
+				sssn = sssn - 1;
+				player2.attack = player2.attack + 5;
+				p2shoppyboi();
+
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p2shoppyboi();
+			}
+		}
+		if (choice == "longsword" && gold >= 75 && lssn > 0)
+		{
+			cout << "\nThe longsword looks like the shortsword. But longer.\n" << "This will cost 300 gold to purchase, and you'll need to trade the merchant your shortsword.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 300;
+				iter = find(backpack.begin(), backpack.end(), sss);
+				if (iter != backpack.end())
+				{
+					*iter == lss;
+				}
+				backpack.push_back(lss);
+				cout << "Longsword has been added to your inventory.";
+				lssn = lssn - 1;
+				player2.attack = player2.attack + 5;
+				p2shoppyboi();
+
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p2shoppyboi();
+			}
+		}
+		if (choice == "pistol" && gold >= 100 && flsn > 0 && lsn == 1)
+		{
+			cout << "\nThe blunderbuss is the weapon of choice for pirates. It looks like a pistol that someone attached a trumpet to.\nThis causes it to function somewhat similarly to a shotgun.\n" << "This will cost 500 gold to purchase, and you'll need to trade the merchant your longsword.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+			cin >> choice;
+			if (choice == "y")
+			{
+				gold = gold - 500;
+				iter = find(backpack.begin(), backpack.end(), lss);
+				if (iter != backpack.end())
+				{
+					*iter == fls;
+				}
+				backpack.push_back(fls);
+				cout << "Flintlock Pistol has been added to your inventory.";
+				flsn = flsn - 1;
+				player2.attack = player2.attack + 5;
+				p2shoppyboi();
+
+			}
+			if (choice == "wand" && gold >= 150 && flsn > 0 && lsn == 1)
+			{
+				cout << "\nThe blunderbuss is the weapon of choice for pirates. It looks like a pistol that someone attached a trumpet to.\nThis causes it to function somewhat similarly to a shotgun.\n" << "This will cost 500 gold to purchase, and you'll need to trade the merchant your flintlock pistol.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+				cin >> choice;
+				if (choice == "y")
+				{
+					gold = gold - 500;
+					iter = find(backpack.begin(), backpack.end(), fls);
+					if (iter != backpack.end())
+					{
+						*iter == mws;
+					}
+					backpack.push_back(mws);
+					cout << "Magic Wand has been added to your inventory.";
+					flsn = flsn - 1;
+					player2.attack = player2.attack + 5;
+					p2shoppyboi();
+
+				}
+			}
+			if (choice == "python" && gold >= 500 && flsn > 0 && lsn == 1)
+			{
+				cout << "\nThe holy hand grenade is the weapon of choice for kings and knights.\nEven though it's best used to exterminate demon bunnies, it'll work against any foe.\nThis causes it to function somewhat similarly to a shotgun.\n" << "This will cost 500 gold to purchase, and you'll need to trade the merchant your wand.\nAre you sure you want to buy it?\nType y if you want to purchase it, type n if you want to leave.\n";
+				cin >> choice;
+				if (choice == "y")
+				{
+					gold = gold - 500;
+					iter = find(backpack.begin(), backpack.end(), mws);
+					if (iter != backpack.end())
+					{
+						*iter == hgs;
+					}
+					backpack.push_back(hgs);
+					cout << "Holy Hand Grenade has been added to your inventory.";
+					hgsn = hgsn - 1;
+					player2.attack = player2.attack + 20;
+					p2shoppyboi();
+
+				}
+			}
+			if (choice == "n")
+			{
+				cout << "You decide to stop looking at the item.";
+				p2shoppyboi();
+			}
+		}
+	}
+}
