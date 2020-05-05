@@ -196,11 +196,11 @@ int main()
 			} while (sw == 1);
 
 			break;
-			//DUNGEON 1 GOBLIN LEVEL
+			//DUNGEON 2 GOBLIN LEVEL
 		case 2:
 			do
 			{
-				cout << "You are in the first dungeon.\n";
+				cout << "You are in the second dungeon.\n";
 				enemynumber = rand() % 4 + 1;
 				cout << "There are " << enemynumber << " enemies\n";
 				do
@@ -295,7 +295,7 @@ int main()
 		case 3:
 			do
 			{
-				cout << "You are in the second dungeon.\n";
+				cout << "You are in the fourth dungeon.\n";
 				enemynumber = rand() % 3 + 1;
 				cout << "There are " << enemynumber << " enemies\n";
 					do
@@ -361,15 +361,15 @@ int main()
 					}
 			} while (sw == 3);
 			break;
-			//DUNGEON 3 BOSS LEVEL, DRACULA
+			//DUNGEON 5 BOSS LEVEL, DRACULA
 		case 4:
 			p3health = p1health + p2health;
 			p3attack = p1attack + p2attack;
-			cout << "You are in dungeon three.\n";
+			cout << "You are in dungeon four.\n";
 			do
 			{
 				enemynumber = 1;
-				cout << "There is " << enemynumber << " enemies\n";
+				cout << "There is " << enemynumber << " enemiy\n";
 
 				do
 				{
@@ -418,9 +418,10 @@ int main()
 				else if (choice == "run" || choice == "Run")
 				{
 					cout << "\nYou ran.\n\n";
+					sw = 4;
 					run = 1;
 				}
-			} while (enemynumber > 0 && p3health > 0 && run == 0);
+			} while (enemynumber > 0 && p3health > 0 && sw==4 && run ==1);
 			if (run == 1)
 			{
 				run = 0;
@@ -432,7 +433,7 @@ int main()
 		case 5:
 			do
 			{
-				cout << "You are in dungeon four.\n";
+				cout << "You are in dungeon three.\n";
 				enemynumber = rand() % 3 + 1;
 				cout << "There are " << enemynumber << " enemies\n";
 				do
@@ -489,7 +490,7 @@ int main()
 					cout << "\nYou ran.\n\n";
 					run = 1;
 				}
-			} while (enemynumber > 0 && p2health > 0 && run == 0);
+			} while (enemynumber > 0 && p2health > 0 && sw == 5);
 			if (run == 1)
 			{
 				run = 0;
@@ -497,11 +498,11 @@ int main()
 				break;
 			}
 			break;
-			//DUNGEON 5 OGRE LEVEL
+			//DUNGEON 1 OGRE LEVEL
 		case 6:
 			do
 			{
-				cout << "You are in dungeon five.";
+				cout << "You are in dungeon one.";
 				enemynumber = rand() % 3 + 1;
 				cout << "There are " << enemynumber << " enemies\n";
 				do
@@ -605,27 +606,27 @@ int main()
 				if (choice == "1")
 				{
 					cout << "Transporting to first dungeon.\n";
-					sw = 2;
+					sw = 6;
 				}
 				else if (choice == "2")
 				{
 					cout << "Transporting to second dungeon.\n";
-					sw = 3;
+					sw = 2;
 				}
 				else if (choice == "3")
 				{
 					cout << "Transporting to third dungeon.\n";
-					sw = 4;
+					sw = 5;
 				}
 				else if (choice == "4")
 				{
 					cout << "Transporting to fourth dungeon.\n";
-					sw = 5;
+					sw = 4;
 				}
 				else if (choice == "5")
 				{
 					cout << "Transporting to fifth dungeon.\n";
-					sw = 6;
+					sw = 3;
 				}
 				else if (choice == "shop" && p1health == 90)
 				{
@@ -645,12 +646,14 @@ int main()
 void p1shoppyboi()
 {
 	cout << "\nWelcome to the shop, would you like to purchase anything?\n";
+	cout << "Gold: "<< gold << "\n";
 	p1shopmain();
 }
 //PLAYER2 SHOP FUNCTION
 void p2shoppyboi()
 {
 	cout << "\nWelcome to the shop, would you like to purchase anything?\n";
+	cout << "Gold: " << gold << "\n";
 	p2shopmain();
 }
 //PLAYER 1 SHOP LIST + BUY FUNCTION
